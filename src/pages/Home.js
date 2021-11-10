@@ -1,12 +1,11 @@
-import { IonContent, IonPage } from '@ionic/react';
+import {  IonPage } from '@ionic/react';
+import LoginReg from '../components/LoginReg';
 import './Home.css';
 
 const Home = () => {
   return (
     <IonPage>
-      <IonContent fullscreen>
-
-      </IonContent>
+        <LoginReg/>
     </IonPage>
   );
 };

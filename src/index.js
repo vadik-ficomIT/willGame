@@ -9,13 +9,15 @@ const Global  = createGlobalStyle`
   *{
     margin:0;
     padding:0;
-    background-color:#000;
     box-sizing:border-box;
   }
 `
 const theme = {
   colors:{
-    primary:"#F597AE",
+    primary:{
+      edge:"#F597AE",
+      color:"#000"
+    },
     second:"green",
   }
 }
