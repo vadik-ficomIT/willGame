@@ -3,11 +3,28 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+
+const Global  = createGlobalStyle`
+  *{
+    margin:0;
+    padding:0;
+    background-color:#000;
+    box-sizing:border-box;
+  }
+`
+const theme = {
+  colors:{
+    primary:"#F597AE",
+    second:"green",
+  }
+}
 
 ReactDOM.render(
-  <React.StrictMode>
+  <ThemeProvider theme={theme} >
+    <Global/>
     <App />
-  </React.StrictMode>,
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
