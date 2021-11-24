@@ -9,14 +9,14 @@ const Global  = createGlobalStyle`
   *{
     margin:0;
     padding:0;
-    box-sizing:border-box;
+    fonts-size:Rouge Script;
   }
 `
 const theme = {
   colors:{
     primary:{
       edge:"#F597AE",
-      color:"#000"
+      color:"#014014"
     },
     second:"green",
   }
