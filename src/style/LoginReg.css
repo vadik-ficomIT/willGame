@@ -107,3 +107,9 @@
   height: 60px;
   --background: #D42650;
 }
+.logo-abs {
+  width: 150px;
+  position: absolute;
+  top: 5px;
+  left: calc(50vw - 150px / 2);
+}

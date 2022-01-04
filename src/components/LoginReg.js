@@ -1,25 +1,28 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-unused-vars */
+import React, {  useState } from 'react';
 import { StyledLoginRegConteiner } from '../style/StyleLoginReg';
 import '../style/LoginReg.css'
-import axios from 'axios';
 import { IonButton, IonInput, IonLabel, IonSegment, IonSegmentButton } from '@ionic/react';
-import { sendEmail } from '../functionAxios';
+import { addEmailBase, getCode, sendEmail, singApServer } from '../functionAxios';
+import { useAtom } from 'jotai';
+import { perEmailGL, tokenGL } from '../state';
+import { useHistory } from 'react-router';
+import logo from "../img/logo.jpg";
+
+
 const LoginReg = (props) => {
     const [auntification, setAuntification ] = useState('false');
     const [step, setStep ] = useState(0);
     const [verification, setVerification] = useState(['', '', '', '']);
-    const [ verificationCode, setVerificationCode] = useState('1111');
+    const [ verificationCode, setVerificationCode] = useState('11113');
     const [thereСodeCMC, seThereСodeCMC] = useState(false);
     const [statusCodeCMC, setStatusCodeCMC] = useState(false);
     const [password, setPassword] = useState('');
     const [repPassword, setRepPassword] = useState('');
-    const [perEmail, setPerEmail] = useState('');
-    const [token, setToken] = useState(false);
-    // const [token, setToken] = useAtom(tokenGL);
-
-    const personRegister = () => {
-
-    }
+    const [perEmail, setPerEmail] = useAtom(perEmailGL);
+    const [token, setToken] = useAtom(tokenGL);
+    const [disableButton, setDisableButton] = useState(false);
+    const history = useHistory();
 
     function changeInput(i, e) {
         function filterRange(arr, index, el) {
@@ -36,7 +39,8 @@ const LoginReg = (props) => {
             setVerification(filterRange(verification, i, e));
             seThereСodeCMC(true)
             let codeCMCString = verification.join('');
-            if(codeCMCString === verificationCode){
+            // eslint-disable-next-line eqeqeq
+            if(codeCMCString == verificationCode){
                 setStatusCodeCMC(true)
             }else if (statusCodeCMC === true){
                 setStatusCodeCMC(false)
@@ -50,32 +54,64 @@ const LoginReg = (props) => {
     
     }
 
-    // useEffect(()=>{
-    //     axios({
-    //         method: 'post',
-    //         url:'http://willgameserver/',
-    //         // headers: {
-    //         //     'Access-Control-Allow-Origin': '*',
-    //         //     'Content-Type': 'application/json',
-    //         //     withCredentials: true,
-    //         //     mode: 'no-cors',
-    //         //   }   
-    //         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    //         data: {
-    //             ID: 'Fred',
-    //             email: 'd'
-    //         }
+    const sendCode = () => {
+        getCode()
+        .then(
+            (e)=> {
+                console.log(e);
+                setVerificationCode(e.data)
+                setStep(1);
+                setDisableButton(true)
+                setTimeout(()=>setDisableButton(false), 20*1000)
+            }
+        ).catch(
+            (e)=> console.log('eror ')
+        )
+        seThereСodeCMC(false)
+        setVerification(['','','',''])
+    }
 
-    //         // headers:'access-control-allow-origin'
-    //     }).then(  async (response) => {
-    //         console.log(response.data);
-    //       })
-    //       .catch( async (error) => {
-    //         console.log(error);
-    //       })
-    // },[])
+    function singAp() {
+        singApServer(perEmail,password)
+        .then(
+            (e)=> {
+               if (e.data){
+                setToken('token');
+                history.push('games')
+               }else{
+                alert('Неверный логин и/или пароль')
+               }
+            }
+        ).catch(
+            (e)=> console.log('eror ')
+        )
+    }
+
+    function Login() {
+        sendEmail(perEmail)
+        .then(
+            (e)=> {
+                if (e.data){
+                    if(password === repPassword){
+                        sendCode()
+                    }else{
+                        setRepPassword('')
+                        setPassword('')
+                    }
+                }else{
+                    alert('Пользователь  с таким email уже существует');
+                }
+            }
+        ).catch(
+            (e)=> console.log('eror ')
+        )
+    }
+
     return (
         <div className="login-reg">
+            <div className="logo  logo-abs">
+                <img width={'200px'} alt="willGame" src={logo} />
+            </div>
             <StyledLoginRegConteiner>
                 <div className={'main-conteiner'}>
                     {
@@ -83,25 +119,22 @@ const LoginReg = (props) => {
                         ?
                         <div>
                             <header className={`header-change`}>
-                                <IonSegment  onIonChange={(e)=>setAuntification(e.detail.value)}>
-                                <IonSegmentButton value={'true'}>
-                                    <IonLabel>Вход</IonLabel>
-                                </IonSegmentButton>
-                                <IonSegmentButton value={'false'}>
-                                    <IonLabel>Регистрация</IonLabel>
-                                </IonSegmentButton>
+                                <IonSegment value={auntification}  onIonChange={(e)=>setAuntification(e.detail.value)}>
+                                    <IonSegmentButton value={'true'}>
+                                        <IonLabel>Вход</IonLabel>
+                                    </IonSegmentButton>
+                                    <IonSegmentButton value={'false'}>
+                                        <IonLabel>Регистрация</IonLabel>
+                                    </IonSegmentButton>
                                 </IonSegment>
                             </header>
                             <form
-                                onSubmit={ (e) => {
+                                onSubmit={  (e) => {
+                                    // ;
                                     e.preventDefault();
-                                    if(password === repPassword){
-                                        sendEmail(perEmail);
-                                        setStep(1)
-                                    }else{
-                                        setRepPassword('')
-                                        setPassword('')
-                                    }
+                                    (auntification === 'true') ? singAp() : Login()
+                                    
+                                   
                                 }}
                             >
                             {
@@ -109,8 +142,12 @@ const LoginReg = (props) => {
                                 ? 
                                     <div  className="main-content main-content-log">
                                         <div className="inputs">
-                                        <IonInput placeholder={'Введите email'}  required={true}/>
-                                        <IonInput placeholder={'Введите пароль'}  required={true}/>
+                                            <IonInput placeholder={'Введите email'} type={'email'}
+                                                 onIonBlur={(e)=>setPerEmail(e.target.value)}   required={true}
+                                            />
+                                            <IonInput placeholder={'Введите пароль'} type={'password'} 
+                                                onIonBlur={(e)=>setPassword(e.target.value)} required={true}
+                                            />
                                         </div>
                                         <IonButton expand="block">Вход</IonButton>
                                     </div>
@@ -121,9 +158,7 @@ const LoginReg = (props) => {
                                     <IonInput value={password} onIonBlur={(e)=>setPassword(e.target.value)} type={'password'} placeholder={'Введите пароль'} required={true} />
                                     <IonInput value={repPassword} onIonBlur={(e)=>setRepPassword(e.target.value)}  type={'password'} placeholder={'Повторите пароль'}  required={true}/>
                                     </div>
-                                    <IonButton type={"submit"} expand="block" 
-                                        onClick={personRegister}
-                                    >Регистрация</IonButton>
+                                    <IonButton type={"submit"} expand="block" >Регистрация</IonButton>
                                 </div> 
                             }
                             </form>
@@ -136,11 +171,25 @@ const LoginReg = (props) => {
                             <div  className="main-content main-content-log">
                                 <div className="code">
                                 <form 
-                                    onSubmit={ async(e) => {
-                                        e.preventDefault();
+                                    onSubmit={ async(evnForm) => {
+                                        evnForm.preventDefault();
                                         setVerification(['', '', '', '']);
-                                        localStorage.setItem('token', 'yes' );
-                                        setToken('token');
+                                        addEmailBase(perEmail, password)
+                                        .then(
+                                            (e)=> {
+                                                console.log(e.data);
+                                                console.log(perEmail);
+                                                if (e.data){
+                                                    localStorage.setItem('token', 'yes' );
+                                                    setToken('token');
+                                                    history.push('games')
+                                                }else{
+                                                    alert('Пользователь  с таким email уже существует');
+                                                }
+                                            }
+                                        ).catch(
+                                            (e)=> console.log('eror ')
+                                        )
                                     }}
                                 >
                                     <span className={'to-correct-number'} onClick={()=>setStep(0)} > Назад</span>
@@ -174,10 +223,7 @@ const LoginReg = (props) => {
                                             <span 
                                                 className={` ${statusCodeCMC ? 'goodCodeCMC' : 'badCodeCMC'}`}
                                                 onClick={statusCodeCMC ? null 
-                                                    : ()=> {
-                                                        setVerification(['', '', '', '']);
-                                                        seThereСodeCMC(false)
-                                                    } 
+                                                    : sendCode
                                                 }
                                             >
                                                 { statusCodeCMC ? 'Код верный' :`Неверный код. Попробуйте ещё раз`}
@@ -187,7 +233,7 @@ const LoginReg = (props) => {
                                     {
                                         statusCodeCMC 
                                         ?  <IonButton type={'submit'} expand="block">Вход</IonButton>
-                                        :  <IonButton  expand="block">выслать ещё раз</IonButton>
+                                        :  <IonButton disabled={disableButton} onClick={sendCode}  expand="block">выслать ещё раз</IonButton>
 
                                     }
                                 </form>

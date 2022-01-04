@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -22,6 +23,13 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import styled from 'styled-components';
+import { useAtom } from 'jotai';
+import { perEmailGL, tokenGL } from './state';
+import { useEffect } from 'react';
+import GamePage from './pages/GamePage';
+
+import './style/main.css';
+import { useDidUpdateEffect } from './hooks/useDidUpdateEffect';
 
  const AppWrapper = styled.div`
   width:100vw;
@@ -30,21 +38,50 @@ import styled from 'styled-components';
 `
 
 
-const App = () => (
+const App = () => {
+  const [token, setToken] = useAtom(tokenGL);
+  const [perEmail, setPerEmail] = useAtom(perEmailGL);
+
+  useEffect(
+    ()=>{
+      setPerEmail(localStorage.getItem('perEmail') || '' )
+    },[]
+  )
+
+  useEffect(
+    ()=>{
+      if(token){
+        localStorage.setItem('token', token)
+      }else{
+        setToken(localStorage.getItem('token'))
+        localStorage.removeItem('token');
+      }
+    },[token]
+  )
+
+  useDidUpdateEffect(
+    ()=>{
+      localStorage.setItem('perEmail',perEmail);
+    },[perEmail]
+  )
+
+
+  return(
   <AppWrapper>
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
+        <Redirect to="/home" />
           <Route exact path="/home">
             <Home />
           </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
+          <Route exact path="/games">
+            <GamePage />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
   </AppWrapper>
-);
+)};
 
 export default App;
