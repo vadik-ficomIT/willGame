@@ -52,9 +52,14 @@
                 align-items: center;
                 justify-content: center;
                 background: #971434;
-                ;
                 border: 15px solid #D42650;
                 border-radius: 30px;
+                img:not(.current-img){
+                    opacity: 0;
+                    animation-duration: 1.2s;
+                    animation-name: opacityimg;    
+                    animation-fill-mode:forwards;              
+                }
             }
             .current-cell{
                 background: #D42650;
@@ -64,3 +69,43 @@
         }
     }
 }
+
+
+
+@keyframes opacityimg {
+    from {
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 0.05;
+      }
+    12.5% {
+        opacity: 0.12.5;
+      }
+    25% {
+        opacity: 0.25;
+      }
+    37.5% {
+        opacity: 0.37.5;
+      }
+    50% {
+        opacity: 0.5;
+      }
+    62.5% {
+        opacity: 0.62.5;
+      }
+    75% {
+        opacity: 0.75;
+      }
+    85.5% {
+        opacity: 0.85.5;
+      }
+    95% {
+        opacity: 0.95;
+      }
+
+      to {
+        opacity: 1;
+    }
+  }

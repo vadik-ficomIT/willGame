@@ -17,11 +17,11 @@ const GamePage = () => {
       if (!localStorage.getItem('token')){
         history.push('/')
       }else{
-        console.log(perEmail);
         checkGame(perEmail)    
         .then(
           (e)=> {
             setGameNumber(e.data)
+            console.log(e);
           }
         ).catch(
           ()=> alert('Неизвестная ошибка перезагрузите страницу')

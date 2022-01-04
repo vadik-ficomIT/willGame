@@ -37,7 +37,7 @@ const Cell = (props) => {
         <div className={`${current ? 'current-cell' : ''} cell`}  onClick={clickCell}>
             { ( props.enabled) &&  
                 <div>
-                    <img alt='cells' src= {(props.win) ? goodSrc : bedSrc}/>
+                    <img className={`${current ? 'current-img' : ''}`} alt='cells' src= {(props.win) ? goodSrc : bedSrc}/>
                 </div>
             }
         </div>
