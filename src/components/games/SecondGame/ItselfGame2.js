@@ -33,9 +33,9 @@ const ItselfGame2 = (props) =>{
         async () => {
             if(toogle){
 
-                if(true){
-                    roadRef.current.classList.add('road-animation')
-                }
+                // if(true){
+                //     roadRef.current.classList.add('road-animation')
+                // }
 
                 if(userGoRef.current){
                     var lines = document.querySelectorAll('.line')
@@ -43,7 +43,6 @@ const ItselfGame2 = (props) =>{
 
                     lines.forEach((el) => {
                         el.style.top = `${lineBottomRef.current}px`
-                        console.log( el.style.top);
                     })
 
                     // bushs.forEach((el) => {
@@ -64,6 +63,15 @@ const ItselfGame2 = (props) =>{
             }
 
             if (colorRecRef.current == 'green'){
+                if(Math.random() > 0.99){
+                    colorRecRef.current = 'red'
+                    console.log(1);
+                    if(userGoRef.current){
+                        alert('Вы проиграли')
+                    }else{
+                        alert('Вы выиграли')
+                    }
+                } 
                 setToogle(!toogle);  
             }
 
@@ -81,12 +89,12 @@ const ItselfGame2 = (props) =>{
     useDidUpdateEffect(
         async ()=>{
             setToogle(true) // tred
-        //     colorRecRef.current = 'red';
-        //    await sleep(2000);
-        //    setToogle(true) // tred
-        //    colorRecRef.current = 'yellow';
-        //    await sleep(2000);
-        //    setToogle(true) // tred
+            colorRecRef.current = 'red';
+           await sleep(2000);
+           setToogle(true) // tred
+           colorRecRef.current = 'yellow';
+           await sleep(2000);
+           setToogle(true) // tred
 
            colorRecRef.current = 'green';
         },[props.beginGame]
@@ -99,7 +107,7 @@ const ItselfGame2 = (props) =>{
 
             <RectTF width={clientWidth * 0.035} class={colorRecRef.current} />
 
-                <Fores userGoRef={userGoRef.current} classN={"left-forest"} />
+                <Fores colorRecRef={colorRecRef.current} userGoRef={userGoRef.current} classN={"left-forest"} />
             <div className="road" ref={roadRef}>
                 {
                     roadArr.map(el =>   
@@ -108,7 +116,7 @@ const ItselfGame2 = (props) =>{
                 }
                 <img className="car" width={clientWidth*0.06} src={car}/>
             </div>
-                <Fores  userGoRef={userGoRef.current}  classN={"right-forest"} />
+                <Fores colorRecRef={colorRecRef.current} userGoRef={userGoRef.current}  classN={"right-forest"} />
         </div>
     )
 }

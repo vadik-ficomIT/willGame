@@ -6,6 +6,7 @@ import forest3 from '../../../img/game2/forest3.svg'
 const Fores = (props) => {
 
     const userGoRef = props.userGoRef;
+    const colorRecRef = props.colorRecRef;
 
     const lenBush =  Math.round( (clientWidth*0.5 / (bushWidth)) * (clientHeight / (bushWidth)));
 
@@ -26,8 +27,8 @@ const Fores = (props) => {
                {   
                 forestArr.length && forestArr.map( (el,indx) =>   
                     <img className="bush" key={indx} 
-                        style={{margin:`${(userGoRef) ? Math.random()*20  : 12}px` }}
-                        width={ `${(userGoRef) ? bushWidth*Math.random()  : bushWidth*0.8}` } 
+                        style={{margin:`${(userGoRef && colorRecRef == 'green') ? Math.random()*20  : 12}px` }}
+                        width={ `${(userGoRef && colorRecRef == 'green') ? bushWidth*Math.random()  : bushWidth*0.8}` } 
                         // src={  `${(false)  ? ((Math.random()*100).toFixed(0) / 2) % 2 == 0 ? forest1 : forest3   : forest1}`  }
                         src={ indx % 2 == 0 ? forest1 : forest3    }
                     />
