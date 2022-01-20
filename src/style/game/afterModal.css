@@ -1,0 +1,29 @@
+.modal-after-game {
+  --background: #1A1A1A;
+  --width: 450px;
+  --height: 180px;
+  --border-radius: 15px;
+  --padding: 15px;
+}
+.modal-after-game .main-content {
+  margin: 10px 15px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+}
+.modal-after-game .main-content .title {
+  text-align: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 48px;
+  line-height: 56px;
+}
+.modal-after-game .main-content .win {
+  color: #05FF00;
+}
+.modal-after-game .main-content .loss {
+  color: #FF002E;
+}

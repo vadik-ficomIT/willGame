@@ -3,6 +3,7 @@ import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import FirstGame from '../components/games/FistGame/FirstGame';
+import SecondGame from '../components/games/SecondGame/SecondGame';
 import { checkGame } from '../functionAxios';
 import { perEmailGL } from '../state';
 
@@ -21,7 +22,6 @@ const GamePage = () => {
         .then(
           (e)=> {
             setGameNumber(e.data)
-            console.log(e);
           }
         ).catch(
           ()=> alert('Неизвестная ошибка перезагрузите страницу')
@@ -35,7 +35,8 @@ const GamePage = () => {
         {
           gameNumber &&
           <>
-            {gameNumber == 1 && <FirstGame/>}
+            {gameNumber == 1 && <FirstGame setGameNumber={setGameNumber}/>}
+            {gameNumber == 2 && <SecondGame setGameNumber={setGameNumber}/>}
           </>
         }
     </IonPage>

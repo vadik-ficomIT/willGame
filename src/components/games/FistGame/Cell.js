@@ -14,14 +14,7 @@ const Cell = (props) => {
     const clickCell = () => {
         props.setEnabled(true);
         setCurrent(true);
-        changePoint(perEmail, point)
-        .then((e)=>{
-            console.log(e);
-        })
-        .catch(
-            () => alert('Неизвестная ошибка перезагрузите страницу')
-        )
-     
+
         const step = (props.win) ? 1 : 0 ;
 
         changeGame(perEmail, step)
@@ -31,6 +24,16 @@ const Cell = (props) => {
         .catch(
             () => alert('Неизвестная ошибка перезагрузите страницу')
         )
+
+        changePoint(perEmail, point)
+        .then((e)=>{
+            props.setWinGame(props.win)
+            props.setOpen(true);
+        })
+        .catch(
+            () => alert('Неизвестная ошибка перезагрузите страницу')
+        )
+     
     }
 
     return (

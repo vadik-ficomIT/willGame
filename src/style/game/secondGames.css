@@ -1,0 +1,80 @@
+.itself-game2 {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image: radial-gradient(#025900, #0d7a0b, #367e35);
+  display: flex;
+  flex-direction: row;
+}
+.itself-game2 .traffic-light {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 2;
+}
+.itself-game2 .rectangle-tf {
+  position: absolute;
+  top: calc(15px + 3vw);
+  right: calc(15px + 8.2vw);
+}
+.itself-game2 .rectangle-tf.red {
+  position: absolute;
+  top: calc(15px + 3vw);
+  right: calc(15px + 8.2vw);
+}
+.itself-game2 .rectangle-tf.red path {
+  fill: red;
+}
+.itself-game2 .rectangle-tf.yellow {
+  position: absolute;
+  top: calc(15px + 6.1vw);
+  right: calc(15px + 8.2vw);
+}
+.itself-game2 .rectangle-tf.yellow path {
+  fill: yellow;
+}
+.itself-game2 .rectangle-tf.green {
+  position: absolute;
+  top: calc(15px + 9.4vw);
+  right: calc(15px + 8.2vw);
+}
+.itself-game2 .rectangle-tf.green path {
+  fill: #025900;
+}
+.itself-game2 .left-forest,
+.itself-game2 .right-forest {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: space-around;
+  flex-wrap: wrap;
+  background-color: #01590081;
+  width: 37.5vw;
+  height: 100vh;
+}
+.itself-game2 .left-forest .bush,
+.itself-game2 .right-forest .bush {
+  position: relative;
+  z-index: 0;
+}
+.itself-game2 .road {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #000;
+  width: 25vw;
+  height: 100vh;
+  border-left: 1.5vw solid #C4C4C4;
+  border-right: 1.5vw solid #C4C4C4;
+  z-index: 1;
+}
+.itself-game2 .road .line {
+  position: relative;
+}
+.itself-game2 .road .car {
+  position: absolute;
+  bottom: 10px;
+  right: 2vw;
+}

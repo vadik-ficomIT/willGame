@@ -11,7 +11,7 @@ const ItselfGame = (props) => {
         ()=>{
             let arrCelsTemp = [];
             for( let i = 0; i < 10; i++ ){
-                arrCelsTemp[i]= (Math.random() < 0.7 ) ? true : false ;
+                arrCelsTemp[i]= (Math.random() <= 0.7 ) ? true : false ;
             }
             setArrCels(arrCelsTemp)
         },[]
@@ -21,7 +21,9 @@ const ItselfGame = (props) => {
         <div className="game cells">
             {
                 arrCels.map( (el, indx )=> 
-                    <Cell key={indx} win={el} enabled={enabled} setEnabled={setEnabled}/>
+                    <Cell setWinGame={props.setWinGame} key={indx} win={el} enabled={enabled}
+                     setEnabled={setEnabled} setOpen={props.setOpen}
+                    />
                 )
             }
         </div>
