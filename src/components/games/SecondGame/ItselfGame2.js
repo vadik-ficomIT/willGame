@@ -25,19 +25,18 @@ const ItselfGame2 = (props) =>{
     const colorRecRef = useRef('')
     const userGoRef = useRef(false)
     const roadRef = useRef(null)
+    const trafLighToogleRef = useRef(false)
     const lineBottomRef = useRef(0)
 
     const marginLineRoad = clientWidth*0.3 / 8;
 
-    useDidUpdateEffect(
+    useEffect(
         async () => {
-            if(toogle){
-
-                // if(true){
-                //     roadRef.current.classList.add('road-animation')
-                // }
-
                 if(userGoRef.current){
+                    if(colorRecRef.current == 'red'){
+                        userGoRef.current = false;
+                        alert('lose');
+                    }
                     var lines = document.querySelectorAll('.line')
                     var bushs = document.querySelectorAll('.bush')
 
@@ -56,26 +55,9 @@ const ItselfGame2 = (props) =>{
                         lineBottomRef.current = 0
                     }
                 }
-
-                userGoRef.current = false;
                 await sleep(41);
-                setToogle(!toogle);   
-            }
-
-            if (colorRecRef.current == 'green'){
-                if(Math.random() > 0.99){
-                    colorRecRef.current = 'red'
-                    console.log(1);
-                    if(userGoRef.current){
-                        alert('Вы проиграли')
-                    }else{
-                        alert('Вы выиграли')
-                    }
-                } 
-                setToogle(!toogle);  
-            }
-
-        },[toogle, colorRecRef]
+                setToogle(!toogle);
+        },[toogle, userGoRef.current,  colorRecRef.current]
     )
 
     useEffect(
@@ -83,20 +65,39 @@ const ItselfGame2 = (props) =>{
             document.addEventListener( 'keydown', ()=>{
                 userGoRef.current = true;
             })
+            document.addEventListener( 'keyup', ()=>{
+                userGoRef.current = false;
+            })
         },[]
+    )
+
+    useEffect(
+        async ()=>{
+            if(trafLighToogleRef.current){
+                console.log('f');
+                trafLighToogleRef.current = false;
+                await sleep(Math.random()*1900)
+                colorRecRef.current = 'yellow'
+                await sleep(Math.random()*700)
+                colorRecRef.current = 'red'
+                await sleep(Math.random()*1200)
+                colorRecRef.current = 'yellow'
+                await sleep(Math.random()*500)
+                colorRecRef.current = 'green'
+                await sleep(Math.random()*500)
+                trafLighToogleRef.current = true
+            }
+        },[trafLighToogleRef.current]
     )
 
     useDidUpdateEffect(
         async ()=>{
-            setToogle(true) // tred
             colorRecRef.current = 'red';
            await sleep(2000);
-           setToogle(true) // tred
            colorRecRef.current = 'yellow';
            await sleep(2000);
-           setToogle(true) // tred
-
            colorRecRef.current = 'green';
+           trafLighToogleRef.current = true;
         },[props.beginGame]
     )
     
